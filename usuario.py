@@ -42,31 +42,112 @@ def interaccion_paises():
 def generar_informe():
     print("Pere que el sistema esta lento")
 def modulo_reportes():
-    print("""Obtener todos los datos de población para India desde 2000 hasta 2023.
-Listar los países con su información de código ISO y código ISO3.
-Datos de población para el indicador 'SP.POP.TOTL'.
-Obtener los datos de población de los últimos 10 años para todos los países.
-Total de población para India en el año 2022.
-Población total registrada antes del año 2000.
-Población total registrada después del año 2010.
-Porcentaje de crecimiento de la población de India entre 2010 y 2020.
-Población de India en el año 2023 (si está disponible).
-Obtener el año con la población más baja para India.
-Número de registros de población por año.
-Países con un crecimiento poblacional mayor al 2% anual en los últimos 5 años.
-Listar los años en los que la población de India superó los 1,000 millones.
-Obtener la población total registrada para todos los países en el año 2000.
-Obtener la población menos registrada para India en los últimos 20 años.
-Promedio de población registrada por año para India desde 1980 hasta 2020.
-Cantidad de años con datos de población disponibles para India.
-Listar los países con datos de población disponibles para cada año entre 2000 y 2023.
-Población total de India en 2019.
-Años en los que la población de India creció más de 1 millón en comparación con el año anterior.
-Población registrada de India en cada década desde 1960.
-Población total registrada para todos los países en 2023.
-Años en los que no hay datos de población disponibles para India.
-Año con la población más alta registrada para India.
-Años con datos de población disponibles para más de 50 países.""")
+    opc = input(""" Seleccione:
+1. Obtener todos los datos de población para India desde 2000 hasta 2023.
+2. Listar los países con su información de código ISO y código ISO3.
+3. Datos de población para el indicador 'SP.POP.TOTL'.
+4. Obtener los datos de población de los últimos 10 años para todos los países.
+5. Total de población para India en el año 2022.
+6. Población total registrada antes del año 2000.
+7. Población total registrada después del año 2010.
+8. Porcentaje de crecimiento de la población de India entre 2010 y 2020.
+9. Población de India en el año 2023 (si está disponible).
+10. Obtener el año con la población más baja para India.
+11. Número de registros de población por año.
+12. Países con un crecimiento poblacional mayor al 2% anual en los últimos 5 años.
+13. Listar los años en los que la población de India superó los 1,000 millones.
+14. Obtener la población total registrada para todos los países en el año 2000.
+15. Obtener la población menos registrada para India en los últimos 20 años.
+16. Promedio de población registrada por año para India desde 1980 hasta 2020.
+17. Cantidad de años con datos de población disponibles para India.
+18. Listar los países con datos de población disponibles para cada año entre 2000 y 2023.
+19. Población total de India en 2019.
+20. Años en los que la población de India creció más de 1 millón en comparación con el año anterior.
+21. Población registrada de India en cada década desde 1960.
+22. Población total registrada para todos los países en 2023.
+23. Años en los que no hay datos de población disponibles para India.
+24. Año con la población más alta registrada para India.
+25. Años con datos de población disponibles para más de 50 países.
+""")
+    while True:
+        if opc == "1":
+            print("Puto")
+            break
+        elif opc =="2":
+            print("Puto") 
+            break
+        elif opc =="3":
+            print("Puto")
+            break 
+        elif opc =="4":
+            print("Puto")
+            break
+        elif opc =="5":
+            print("Puto") 
+            break
+        elif opc =="6":
+            print("Puto") 
+            break
+        elif opc =="7":
+            print("Puto") 
+            break
+        elif opc =="8":
+            print("Puto") 
+            break
+        elif opc =="9":
+            print("Puto") 
+            break
+        elif opc =="10":
+            print("Puto") 
+            break
+        elif opc =="11":
+            print("Puto") 
+            break
+        elif opc =="12":
+            print("Puto") 
+            break
+        elif opc =="13":
+            print("Puto") 
+            break
+        elif opc =="14":
+            print("Puto") 
+            break
+        elif opc =="15":
+            print("Puto") 
+            break
+        elif opc =="16":
+            print("Puto") 
+            break
+        elif opc =="17":
+            print("Puto") 
+            break
+        elif opc =="18":
+            print("Puto") 
+            break
+        elif opc =="19":
+            print("Puto") 
+            break
+        elif opc =="20":
+            print("Puto") 
+            break
+        elif opc =="21":
+            print("Puto") 
+            break
+        elif opc =="22":
+            print("Puto") 
+            break
+        elif opc =="23":
+            print("Puto") 
+            break
+        elif opc =="24":
+            print("Puto") 
+            break
+        elif opc =="25":
+            print("Puto")
+            break 
+        else:
+            print("Escoja una opcion presentada")
+            return modulo_reportes()
 
 opciones = {"1": gestion_datos, "2": interaccion_paises, "3": generar_informe, "4": modulo_reportes}
 
@@ -88,5 +169,3 @@ while True:
         break
     else:
         print("Lea bien...")
-        
-

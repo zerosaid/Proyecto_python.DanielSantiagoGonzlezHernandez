@@ -30,12 +30,53 @@ def agregar_nuevos_elementos_json(nombre_archivo,new_dicc):
     datos.append(new_dicc)
     escribir_json(nombre_archivo,datos)
 
-def gestion_datos():
-    datos_usuario = {}
+def gestion_datos(archivo):
+    with open(archivo, 'r', encoding='utf-8') as f:
+        datos_usuario = {}
     datos_usuario['año'] = input("Ingrese el año del cual desea investigar: ")
     datos_usuario['nombre'] = input("Ingrese el nombre del pais que desea revisar:  ").capitalize()
     datos_usuario['codigo ISO3'] = (datos_usuario['nombre'].upper()[:3])
     datos_usuario['codigo ISO'] = (datos_usuario['nombre'].upper()[:2])
+    return json.load(f)
+
+def obtener_paises():
+    paises = gestion_datos('paises.json')
+    return [(p["nombre"], p["codigo_iso"], p["codigo_iso3"]) for p in paises]
+
+def obtener_indicadores():
+    indicadores = gestion_datos('indicadores.json')
+    return {i["id_indicador"]: i["descripcion"] for i in indicadores}
+
+def obtener_poblacion_por_pais(pais, indicador="SP.POP.TOTL"):
+    poblacion = gestion_datos('poblacion.json')
+    return [p for p in poblacion if p["pais"] == pais and p["indicador_id"] == indicador]
+
+def obtener_poblacion_por_rango(pais, inicio, fin):
+    datos = obtener_poblacion_por_pais(pais)
+    return [p for p in datos if inicio <= p["ano"] <= fin]
+
+def obtener_poblacion_total_anio(anio):
+    poblacion = gestion_datos('poblacion.json')
+    return sum(p["valor"] for p in poblacion if p["ano"] == anio)
+
+def obtener_anio_poblacion_extrema(pais, tipo="min"):
+    datos = obtener_poblacion_por_pais(pais)
+    if tipo == "min":
+        return min(datos, key=lambda x: x["valor"])["ano"]
+    return max(datos, key=lambda x: x["valor"])["ano"]
+
+def calcular_crecimiento_poblacional(pais, anio_inicio, anio_fin):
+    datos = obtener_poblacion_por_pais(pais)
+    inicio = next((p["valor"] for p in datos if p["ano"] == anio_inicio), None)
+    fin = next((p["valor"] for p in datos if p["ano"] == anio_fin), None)
+    if inicio and fin:
+        return ((fin - inicio) / inicio) * 100
+    return None
+
+if __name__ == "__main__":
+    pais = input("Ingrese el nombre del país: ")
+    print(f"Población de {pais} entre 2000 y 2023:", obtener_poblacion_por_rango(pais, 2000, 2023))
+
 
 def interaccion_paises():
     print("Colombia supremasi")
@@ -154,10 +195,10 @@ opciones = {"1": gestion_datos, "2": interaccion_paises, "3": generar_informe, "
 while True:
     os.system("cls" if os.name =="nt" else"clear")
     print("""
-          🂠  🂡  🂫  🂬  🂭  🂮  🃟 🃟  🂱  🂻  🂼  🂽  🂾  🂠
-                  Gestion de datos del IEG
-          🂠  🃁  🃋  🃌  🃍  🃎  🃟 🃟  🃑  🃛  🃜  🃝  🃞  🂠
-          """)
+        🂠  🂡  🂫  🂬  🂭  🂮  🃟 🃟  🂱  🂻  🂼  🂽  🂾  🂠
+                Gestion de datos del IEG
+        🂠  🃁  🃋  🃌  🃍  🃎  🃟 🃟  🃑  🃛  🃜  🃝  🃞  🂠
+        """)
     print("Ingrese \n1. Ver Gestión de Datos de Población \n2. Ver Interacción con Países y Indicadores \n3. Generar un informe \n4. Ver Módulo de Reportes \n5. Salir")
     opc = input("Ingrese la opción requerida: \n")
     if opc in opciones:

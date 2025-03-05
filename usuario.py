@@ -20,10 +20,10 @@ def leer_json(nombre_archivo):
 
         return []
     except json.JSONDecodeError:
-        print(f"❌ Error: El archivo '{nombre_archivo}' no tiene formato JSON válido.")
+        print(f" Error: El archivo '{nombre_archivo}' no tiene formato JSON válido.")
         return []
     except IOError as e:
-        print(f"❌ Error al leer el archivo '{nombre_archivo}': {e}")
+        print(f" Error al leer el archivo '{nombre_archivo}': {e}")
         return []
 
 def agregar_nuevos_elementos_json(json,new_dicc):
@@ -33,10 +33,21 @@ def agregar_nuevos_elementos_json(json,new_dicc):
 
 def gestion_datos():
     
-    nombre =  input("Ingrese el nombre del país por ejemplo: Indonesia ").capitalize()
-    codigo_iso =  input("Ingrese el código ISO por ejemplo: ID ").upper()
-    codigo_iso3 =  input("Ingrese el código ISO3 por ejemplo: IDN ").upper()
-
+    nombre =  input("""
+    ╔════════════════════════════════════════════════════════════════╗
+    ║      Ingrese el nombre del país por ejemplo: Indonesia         ║
+    ╚════════════════════════════════════════════════════════════════╝ 
+                    """).capitalize()
+    codigo_iso =  input("""
+    ╔════════════════════════════════════════════════════════════════╗
+    ║             Ingrese el código ISO por ejemplo: ID              ║
+    ╚════════════════════════════════════════════════════════════════╝
+                        """).upper()
+    codigo_iso3 =  input("""
+    ╔════════════════════════════════════════════════════════════════╗
+    ║             Ingrese el código ISO3 por ejemplo: IDN            ║
+    ╚════════════════════════════════════════════════════════════════╝                      
+                         """).upper()
     if  nombre in paises:
         print("Pais ya Registrado")
     elif nombre != "" and codigo_iso != "" and codigo_iso3 != "":
@@ -45,6 +56,8 @@ def gestion_datos():
                 "codigo_iso":codigo_iso,
                 "codigo_iso3":codigo_iso3 
             }
+        if nombre in paises:
+            print("Pais ya Registrado")
         agregar_nuevos_elementos_json("paises.json",new_dicc)
         return
     else:
@@ -56,24 +69,29 @@ def obtener_paises():
     return [(p["nombre"], p["codigo_iso"], p["codigo_iso3"]) for p in paises]
 
 def indicadores ():
-    opc= input("¿Desea agregar un nuevo indicador? (s/n): ").lower()
+    opc= input("""
+            ▞▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▚
+            ▐  ¿Desea agregar un nuevo indicador? (s/n):  ▌
+            ▚▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▞
+               """).lower()
     if opc == "s":
-        """Solicita datos al usuario y los guarda en el JSON."""
+        # Solicita datos al usuario y los guarda en el JSON.
         datos = leer_json("indicadore.json")
         agregar_nuevos_elementos_json("indicadore.json",new_dic)
 
         nuevo_indicador = {
-            "id_indicador": input("Ingrese el ID del indicador: "),
-            "descripcion": input("Ingrese la descripción del indicador: ")
+            "id_indicador": input("Ingrese el ID del indicado, ejemplo: SP.POP.TOTL. "),
+            "descripcion": input("Ingrese la descripción del indicador, ejemplo: Población total. "),
         }
         if any(ind["id_indicador"] == nuevo_indicador["id_indicador"] for ind in datos):
             print("El indicador ya está registrado.")
         else:
             datos.append(nuevo_indicador)
-            escribir_json("paises.json", datos)
+            escribir_json("indicadore.json", datos)
             print("Indicador agregado correctamente.")
     elif opc == "n":
-        """Muestra todos los indicadores almacenados en el JSON."""
+        # Muestra todos los indicadores almacenados en el JSON.
+        print("Mostrando indicadores existentes. :P ")
         datos = leer_json("indicadore.json")
         if not datos:
             print("No hay indicadores registrados.")
@@ -83,7 +101,16 @@ def indicadores ():
 
 def interaccion_paises():
     while True:
-        opc = input("Digite: \n1. Para ver paises\n2. Para ver o agregar indicadores\n3. Para volver\n")
+        opc = input("""
+            ⚇☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲⚇
+            ╳                                              ╳
+            ╳        Digite:                               ╳
+            ╳        1. Para ver paises                    ╳
+            ╳        2. Para ver o agregar indicadores     ╳
+            ╳        3. Para volver                        ╳
+            ╳                                              ╳
+            ⚇☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲⚇      
+                    """)
         if opc == "1":
             for i in paises:
                 print (i)
@@ -189,7 +216,7 @@ def generar_informe():
                 print("⚠️ Opción inválida. Intente de nuevo.")
 
 def modulo_reportes():
-    pais = input("Por favor diga el pais del cual desea ver el modulo de reporte: ").capitalize()
+    #pais = input("Por favor diga el pais del cual desea ver el modulo de reporte: ").capitalize()
     opc = input(""" Seleccione:
 1. Obtener todos los datos de población para un pais desde 2000 hasta 2023.
 2. Listar los países con su información de código ISO y código ISO3.
@@ -218,90 +245,94 @@ def modulo_reportes():
 25. Años con datos de población disponibles para más de 50 países.
 """)
     while True:
+        pais = input("Por favor diga el pais del cual desea ver el modulo de reporte: ").capitalize()
+        paises={}
         for i in leer_json("paises.json"):
-            if i["nombre"] in pais:
-                while True:
-                    if opc == "1":
-                        print("Puto")
-                        break
-                    elif opc =="2":
-                        print("Puto") 
-                        break
-                    elif opc =="3":
-                        print("Puto")
-                        break 
-                    elif opc =="4":
-                        print("Puto")
-                        break
-                    elif opc =="5":
-                        print("Puto") 
-                        break
-                    elif opc =="6":
-                        print("Puto") 
-                        break
-                    elif opc =="7":
-                        print("Puto") 
-                        break
-                    elif opc =="8":
-                        print("Puto") 
-                        break
-                    elif opc =="9":
-                        print("Puto") 
-                        break
-                    elif opc =="10":
-                        print("Puto") 
-                        break
-                    elif opc =="11":
-                        print("Puto") 
-                        break
-                    elif opc =="12":
-                        print("Puto") 
-                        break
-                    elif opc =="13":
-                        print("Puto") 
-                        break
-                    elif opc =="14":
-                        print("Puto") 
-                        break
-                    elif opc =="15":
-                        print("Puto") 
-                        break
-                    elif opc =="16":
-                        print("Puto") 
-                        break
-                    elif opc =="17":
-                        print("Puto") 
-                        break
-                    elif opc =="18":
-                        print("Puto") 
-                        break
-                    elif opc =="19":
-                        print("Puto") 
-                        break
-                    elif opc =="20":
-                        print("Puto") 
-                        break
-                    elif opc =="21":
-                        print("Puto") 
-                        break
-                    elif opc =="22":
-                        print("Puto") 
-                        break
-                    elif opc =="23":
-                        print("Puto") 
-                        break
-                    elif opc =="24":
-                        print("Puto") 
-                        break
-                    elif opc =="25":
-                        print("Puto")
-                        break 
-                    else:
-                        print("Escoja una opc presentada")
-                        return modulo_reportes()
+            paises[i["nombre"]]=i
+        if pais in paises:
+            if opc == "1":
+                print("P")
+                break
+            elif opc =="2":
+                print("a") 
+                break
+            elif opc =="3":
+                print("t")
+                break 
+            elif opc =="4":
+                print("o")
+                break
+            elif opc =="5":
+                print("Pa") 
+                break
+            elif opc =="6":
+                print("Pt") 
+                break
+            elif opc =="7":
+                print("Po") 
+                break
+            elif opc =="8":
+                print("at") 
+                break
+            elif opc =="9":
+                print("ao") 
+                break
+            elif opc =="10":
+                print("to") 
+                break
+            elif opc =="11":
+                print("Pat") 
+                break
+            elif opc =="12":
+                print("Pto") 
+                break
+            elif opc =="13":
+                print("Pao") 
+                break
+            elif opc =="14":
+                print("ato") 
+                break
+            elif opc =="15":
+                print("Pata") 
+                break
+            elif opc =="16":
+                print("Palo") 
+                break
+            elif opc =="17":
+                print("Paro") 
+                break
+            elif opc =="18":
+                print("Puto") 
+                break
+            elif opc =="19":
+                print("Pota") 
+                break
+            elif opc =="20":
+                print("Pote") 
+                break
+            elif opc =="21":
+                print("Pepe") 
+                break
+            elif opc =="22":
+                print("Ppepito") 
+                break
+            elif opc =="23":
+                print("Pedrito") 
+                break
+            elif opc =="24":
+                print("Pera") 
+                break
+            elif opc =="25":
+                print("Tomate")
+                break 
+            else:
+                print("Escoja una opc presentada")
+                return modulo_reportes()
+        '''
         else:
             print("por favor identifique un pais existente en el sistema de lo contrario registrelo por favor.")
-            break
+            break   
+        '''
 
 new_dic={}
 archivo = "Paises.json"

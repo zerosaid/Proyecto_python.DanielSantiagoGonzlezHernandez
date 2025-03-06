@@ -1,5 +1,17 @@
 import os
 import json 
+import sys
+import time
+import itertools
+from modulo_reporte import ingreso_de_datos
+
+def loading_animation(text="Procesando..."):
+                animation = itertools.cycle(["🃟","🂠","🃑","🃛","🃜","🃝","🃞","🃁","🃋","🃌","🃍","🃎","🂡","🂫","🂬","🂭","🂮","🂱","🂻","🂼","🂽","🂾", "\\"])
+                for _ in range(15):  # Ajusta el rango para cambiar la duración
+                    sys.stdout.write(f"\r{text} {next(animation)} ")
+                    sys.stdout.flush()
+                    time.sleep(0.1)
+                sys.stdout.write("\r" + " " * (len(text) + 2) + "\r")  # Borra la línea
 
 def escribir_json(nombre_archivo, diccionario):
     try:
@@ -16,7 +28,7 @@ def leer_json(nombre_archivo):
         with open(nombre_archivo, "r", encoding='utf-8') as archivo:
             return json.load(archivo)
     except FileNotFoundError:
-        print(f"⚠️ El archivo '{nombre_archivo}' no fue encontrado. Creándolo vacío...")
+        print(f" El archivo '{nombre_archivo}' no fue encontrado. Creándolo vacío...")
 
         return []
     except json.JSONDecodeError:
@@ -33,21 +45,36 @@ def agregar_nuevos_elementos_json(json,new_dicc):
 
 def gestion_datos():
     
+    loading_animation("Cargando")
+    
     nombre =  input("""
     ╔════════════════════════════════════════════════════════════════╗
     ║      Ingrese el nombre del país por ejemplo: Indonesia         ║
     ╚════════════════════════════════════════════════════════════════╝ 
                     """).capitalize()
+    if nombre == (""):
+        return gestion_datos
+    loading_animation("Cargando")
+
     codigo_iso =  input("""
     ╔════════════════════════════════════════════════════════════════╗
     ║             Ingrese el código ISO por ejemplo: ID              ║
     ╚════════════════════════════════════════════════════════════════╝
                         """).upper()
+    if codigo_iso == (""):
+        return gestion_datos
+    
+    loading_animation("Cargando")
+
     codigo_iso3 =  input("""
     ╔════════════════════════════════════════════════════════════════╗
     ║             Ingrese el código ISO3 por ejemplo: IDN            ║
     ╚════════════════════════════════════════════════════════════════╝                      
                          """).upper()
+    if codigo_iso3 == (""):
+        return gestion_datos
+    loading_animation("Cargando")
+
     if  nombre in paises:
         print("Pais ya Registrado")
     elif nombre != "" and codigo_iso != "" and codigo_iso3 != "":
@@ -69,30 +96,32 @@ def obtener_paises():
     return [(p["nombre"], p["codigo_iso"], p["codigo_iso3"]) for p in paises]
 
 def indicadores ():
+    loading_animation("Cargando")
     opc= input("""
             ▞▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▚
             ▐  ¿Desea agregar un nuevo indicador? (s/n):  ▌
             ▚▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▞
                """).lower()
+    loading_animation("Cargando")
     if opc == "s":
         # Solicita datos al usuario y los guarda en el JSON.
-        datos = leer_json("indicadore.json")
-        agregar_nuevos_elementos_json("indicadore.json",new_dic)
+        datos = leer_json("indicadores.json")
+        agregar_nuevos_elementos_json("indicadores.json",new_dic)
 
         nuevo_indicador = {
-            "id_indicador": input("Ingrese el ID del indicado, ejemplo: SP.POP.TOTL. "),
-            "descripcion": input("Ingrese la descripción del indicador, ejemplo: Población total. "),
+            "id_indicador": input("Ingrese el ID del indicado, ejemplo: SP.POP.TOTL. ").upper(),
+            "descripcion": input("Ingrese la descripción del indicador, ejemplo: Población total. ").capitalize(),
         }
         if any(ind["id_indicador"] == nuevo_indicador["id_indicador"] for ind in datos):
             print("El indicador ya está registrado.")
         else:
             datos.append(nuevo_indicador)
-            escribir_json("indicadore.json", datos)
+            escribir_json("indicadores.json", datos)
             print("Indicador agregado correctamente.")
     elif opc == "n":
         # Muestra todos los indicadores almacenados en el JSON.
         print("Mostrando indicadores existentes. :P ")
-        datos = leer_json("indicadore.json")
+        datos = leer_json("indicadores.json")
         if not datos:
             print("No hay indicadores registrados.")
         else:
@@ -100,6 +129,7 @@ def indicadores ():
                 print(f"ID: {ind['id_indicador']}, Descripción: {ind['descripcion']}")
 
 def interaccion_paises():
+    loading_animation("Cargando")
     while True:
         opc = input("""
             ⚇☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲⚇
@@ -111,14 +141,19 @@ def interaccion_paises():
             ╳                                              ╳
             ⚇☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲☲⚇      
                     """)
+        loading_animation("Cargando")
         if opc == "1":
             for i in paises:
+                loading_animation("Cargando")
                 print (i)
         elif opc == "2":
+            loading_animation("Cargando")
             indicadores()
         elif opc == "3":
+            loading_animation("Cargando")
             return menu()
         else:
+            loading_animation("Cargando")
             print("Opción no válida, intente de nuevo.")        
 
 def generar_informe():
@@ -138,14 +173,16 @@ def generar_informe():
             return []
 
     def guardar_json(nombre_archivo, datos):
+        loading_animation("Procesando...")
         """Guarda los datos en un archivo JSON."""
         with open(nombre_archivo, "w", encoding="utf-8") as archivo:
             json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
     def agregar_dato_poblacion():
+        loading_animation("Procesando...")
         """Permite agregar un nuevo dato de población al JSON."""
         datos = leer_json(NOMBRE_ARCHIVO2)
-
+        loading_animation("Cargando")
         try:
             #Registra los paise si no existe creando un archivo json
             nuevo_dato = {
@@ -160,26 +197,34 @@ def generar_informe():
             }
             datos.append(nuevo_dato)
             guardar_json(NOMBRE_ARCHIVO2, datos)
+            loading_animation("Cargando")
             print("\n Nuevo dato agregado correctamente al archivo JSON.")
 
         except ValueError:
-            print("⚠️ Error: Ingrese valores numéricos en el año y la población.")
+            loading_animation("Cargando")
+            print("⚠️Error: Ingrese valores numéricos en el año y la población.")
+    
     #Entrega una lista de los cambiso entre las fechas por los datos ingresados
     def generar_informe():
+        loading_animation("Cargando")
         """Genera un informe de población para un país en un período de tiempo específico."""
         datos = leer_json(NOMBRE_ARCHIVO2)
 
         if not datos:
+            loading_animation("Cargando")
             print("No hay datos de población registrados.")
             return
 
         pais = input("Ingrese el nombre del país: ").strip().capitalize()
         try:
+            loading_animation("Procesando...")
             anio_inicio = int(input("Ingrese el año de inicio: "))
+            loading_animation("Procesando...")
             anio_fin = int(input("Ingrese el año de fin: "))
 
             if anio_inicio > anio_fin:
-                print("⚠️ Error: El año de inicio no puede ser mayor que el año de fin.")
+                loading_animation("Cargando")
+                print(" Error: El año de inicio no puede ser mayor que el año de fin.")
                 return
 
             # Filtrar los datos según el país y el período de tiempo
@@ -190,150 +235,52 @@ def generar_informe():
             ]
 
             if datos_filtrados:
+                loading_animation("Cargando")
                 print(f"\n Informe de población para {pais} ({anio_inicio} - {anio_fin}):\n")
                 for dato in datos_filtrados:
+                    loading_animation("Cargando")
                     print(f"Año: {dato['ano']}, Población: {dato['valor']} {dato['unidad']}")
             else:
-                print(f"⚠️ No se encontraron datos para {pais} en el período {anio_inicio}-{anio_fin}.")
+                loading_animation("Cargando")
+                print(f"No se encontraron datos para {pais} en el período {anio_inicio}-{anio_fin}.")
         except ValueError:
-            print("⚠️ Error: Ingrese años válidos en formato numérico.")#) <- La filtracion se da hasta este punto si no hay mas datos esta no se llevara acabo marcando el error :)
+            loading_animation("Cargando")
+            print("Error: Ingrese años válidos en formato numérico.")#) <- La filtracion se da hasta este punto si no hay mas datos esta no se llevara acabo marcando el error :)
 
     if __name__ == "__main__":
         while True:
-            print("1. Agregar un dato de población")
-            print("2. Generar informe de población")
-            print("3. Volver a interfaz inicial")
+            loading_animation("Cargando")
+            
+            print("""
+            ◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛◛
+            ▓   1. Agregar un dato de población     ▓
+            ▓   2. Generar informe de población     ▓
+            ▓   3. Volver a interfaz inicial        ▓
+            ◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚◚
+                  """)
 
             opc = input("Seleccione una opción: ")
             if opc == "1":
+                loading_animation("Cargando")
                 agregar_dato_poblacion()
             elif opc == "2":
+                loading_animation("Cargando")
                 generar_informe()
             elif opc == "3":
+                loading_animation("Te la creiste XD")
                 print("Volviendo...")
                 return menu()
             else:
-                print("⚠️ Opción inválida. Intente de nuevo.")
+                loading_animation("¡¡Oye!!")
+                print("Opción inválida. Intente de nuevo.")
 
 def modulo_reportes():
-    #pais = input("Por favor diga el pais del cual desea ver el modulo de reporte: ").capitalize()
-    opc = input(""" Seleccione:
-1. Obtener todos los datos de población para un pais desde 2000 hasta 2023.
-2. Listar los países con su información de código ISO y código ISO3.
-3. Datos de población para el indicador 'SP.POP.TOTL'.
-4. Obtener los datos de población de los últimos 10 años para todos los países.
-5. Total de población para el pais de su eleccion en el año 2022.
-6. Población total registrada antes del año 2000.
-7. Población total registrada después del año 2010.
-8. Porcentaje de crecimiento de la población de cualquier pais entre 2010 y 2020.
-9. Población del pais que desee en el año 2023 (si está disponible).
-10. Obtener el año con la población más baja para el pais selecionado.
-11. Número de registros de población por año.
-12. Países con un crecimiento poblacional mayor al 2% anual en los últimos 5 años.
-13. Listar los años en los que la población del pais escogido superó los 1,000 millones.
-14. Obtener la población total registrada para todos los países en el año 2000.
-15. Obtener la población menos registrada para el pais elegido en los últimos 20 años.
-16. Promedio de población registrada por año para el pais escogido desde 1980 hasta 2020.
-17. Cantidad de años con datos de población disponibles para el pais escogido.
-18. Listar los países con datos de población disponibles para cada año entre 2000 y 2023.
-19. Población total de el pais escogido en 2019.
-20. Años en los que la población de el pais escogido creció más de 1 millón en comparación con el año anterior.
-21. Población registrada de el pais escogido en cada década desde 1960.
-22. Población total registrada para todos los países en 2023.
-23. Años en los que no hay datos de población disponibles para el pais escogido.
-24. Año con la población más alta registrada para el pais escogido.
-25. Años con datos de población disponibles para más de 50 países.
-""")
-    while True:
-        pais = input("Por favor diga el pais del cual desea ver el modulo de reporte: ").capitalize()
-        paises={}
-        for i in leer_json("paises.json"):
-            paises[i["nombre"]]=i
-        if pais in paises:
-            if opc == "1":
-                print("P")
-                break
-            elif opc =="2":
-                print("a") 
-                break
-            elif opc =="3":
-                print("t")
-                break 
-            elif opc =="4":
-                print("o")
-                break
-            elif opc =="5":
-                print("Pa") 
-                break
-            elif opc =="6":
-                print("Pt") 
-                break
-            elif opc =="7":
-                print("Po") 
-                break
-            elif opc =="8":
-                print("at") 
-                break
-            elif opc =="9":
-                print("ao") 
-                break
-            elif opc =="10":
-                print("to") 
-                break
-            elif opc =="11":
-                print("Pat") 
-                break
-            elif opc =="12":
-                print("Pto") 
-                break
-            elif opc =="13":
-                print("Pao") 
-                break
-            elif opc =="14":
-                print("ato") 
-                break
-            elif opc =="15":
-                print("Pata") 
-                break
-            elif opc =="16":
-                print("Palo") 
-                break
-            elif opc =="17":
-                print("Paro") 
-                break
-            elif opc =="18":
-                print("Puto") 
-                break
-            elif opc =="19":
-                print("Pota") 
-                break
-            elif opc =="20":
-                print("Pote") 
-                break
-            elif opc =="21":
-                print("Pepe") 
-                break
-            elif opc =="22":
-                print("Ppepito") 
-                break
-            elif opc =="23":
-                print("Pedrito") 
-                break
-            elif opc =="24":
-                print("Pera") 
-                break
-            elif opc =="25":
-                print("Tomate")
-                break 
-            else:
-                print("Escoja una opc presentada")
-                return modulo_reportes()
-        '''
-        else:
-            print("por favor identifique un pais existente en el sistema de lo contrario registrelo por favor.")
-            break   
-        '''
+    loading_animation("Profe pongame un 70 por lo menos")
+    print("hola")
+    datos = leer_json("poblacion.json")
+    reporte = ingreso_de_datos(datos)
 
+   
 new_dic={}
 archivo = "Paises.json"
 opciones = {"1": gestion_datos, "2": interaccion_paises, "3": generar_informe, "4": modulo_reportes}
@@ -356,7 +303,10 @@ def menu ():
             opciones[opc]()
             input("\n Presione enter para continuar")
         elif opc == "5":
-            print("Saliendo...")
+            # Llamar a la animación antes de mostrar la salida final
+            loading_animation("Cargando")
+            print("¡Proceso completado!")
+
             break
         else:
             print("Lea bien...")

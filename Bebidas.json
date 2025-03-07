@@ -1,0 +1,27 @@
+[
+    {
+        "nombre":"",
+        "Bebida":"Limonada",
+        "precio":6000
+    },
+    {
+        "nombre":"",
+        "Bebida":"Limonada cerezada",
+        "precio":7500
+    },
+    {
+        "nombre":"",
+        "Bebida":"Gaseosa persona, 350ml",
+        "precio":7000
+    },    
+    {
+        "nombre":"",
+        "Bebida":"Gaseosa 1.5l",
+        "precio":10000
+    },
+    {
+        "nombre":"",
+        "Bebida":"Cerveza en lata",
+        "precio":6500
+    }
+]

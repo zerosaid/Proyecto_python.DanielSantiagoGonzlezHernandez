@@ -1,0 +1,22 @@
+[
+    {
+        "nombre":"",
+        "Entrada":"Papas frtitas",
+        "precio":5000
+    },
+    {
+        "nombre":"",
+        "Entrada":"Sopa",
+        "precio":8000
+    },
+    {
+        "nombre":"",
+        "Entrada":"Empanadas mini",
+        "precio":9000
+    },    
+    {
+        "nombre":"",
+        "Entrada":"Ensalada",
+        "precio":7500
+    }
+]

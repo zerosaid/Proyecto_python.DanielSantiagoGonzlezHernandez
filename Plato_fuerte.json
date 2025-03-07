@@ -1,0 +1,37 @@
+[
+    {
+        "nombre":"",
+        "Plato fuerte":"Pollo Apanado",
+        "precio":12000
+    },
+    {
+        "nombre":"",
+        "Plato fuerte":"Carne molida",
+        "precio":12000
+    },
+    {
+        "nombre":"",
+        "Plato fuerte":"Cerdo frito",
+        "precio":12000
+    },
+    {
+        "nombre":"",
+        "Plato fuerte":"Carne Asada",
+        "precio":15000
+    },
+    {
+        "nombre":"",
+        "Plato fuerte":"Lomo Doreado",
+        "precio":16000
+    },
+    {
+        "nombre":"",
+        "Plato fuerte":"Pechuga Asada",
+        "precio":15000
+    },
+    {
+        "nombre":"",
+        "Plato fuerte":"Carne Bbq",
+        "precio":17000
+    }
+]
